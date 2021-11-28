@@ -7,7 +7,7 @@ on:
       - "LICENSE"
       - "*.md"
 jobs:
-  login:
+  run:
     runs-on: ubuntu-latest
     steps:
       -
