@@ -53,8 +53,8 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       run: ./packageAnalysis.sh
 
-     - name: Publishing
-       run: ./publish.sh
+    - name: Publishing
+      run: ./publish.sh
 
     - name: Deploy
       env:
