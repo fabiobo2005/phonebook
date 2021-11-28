@@ -32,13 +32,13 @@ jobs:
         run: ./build.sh
       - 
         name: Build Frontend Image and Test
-        run: docker build - ./frontend/Dockerfile
+        run: docker build ./frontend/Dockerfile .
       - 
         name: Build Database Image and Test
-        run: docker build - ./database/Dockerfile
+        run: docker build ./database/Dockerfile .
       - 
         name: Build Backend Image and Test
-        run: docker build - ./backend/Dockerfile                
+        run: docker build ./backend/Dockerfile .               
       - 
         name: Publishing
 #        env:
