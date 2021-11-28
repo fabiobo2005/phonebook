@@ -37,4 +37,4 @@ jobs:
 #         DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 #         DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
 #         DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: ./publish.sh        
+        run: docker-compose -f ./iac/docker-compose.yml push        
