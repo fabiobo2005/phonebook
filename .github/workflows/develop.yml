@@ -1,0 +1,48 @@
+name: Develop
+
+on:
+  push:
+    branches:
+      - "develop"
+    paths-ignore:
+      - "LICENSE"
+      - "*.md"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Project Files
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Snyk client
+      run: wget https://github.com/snyk/snyk/releases/download/v1.530.0/snyk-linux; mv ./snyk-linux ./snyk; chmod +x ./snyk;
+
+    - name: Set up Compile, Build and Test environment
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Compile, Build and Test
+      run: ./build.sh
+      
+    - name: Code Analysis - SAST (White-box testing)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./codeAnalysis.sh
+
+    - name: Libraries Analysis - SAST (White-box testing)
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      run: ./librariesAnalysis.sh
+
+    - name: Packaging
+      run: ./package.sh
+
+    - name: Package Analysis - SAST (White-box testing)
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      run: ./packageAnalysis.sh

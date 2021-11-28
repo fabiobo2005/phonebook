@@ -1,0 +1,31 @@
+name: New features
+
+on:
+  push:
+    branches:
+      - "feature/*"
+    paths-ignore:
+      - "LICENSE"
+      - "*.md"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Project Files
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Compile, Build and Test environment
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Compile, Build and Test
+      run: ./build.sh
+      
+    - name: slack_action
+      uses: megamegax/slack_action@0.2.2
+      with:
+        webHook: https://hooks.slack.com/services/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

@@ -1,0 +1,1 @@
+alter table `phonebook` add column address varchar(255) null;

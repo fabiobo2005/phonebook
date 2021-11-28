@@ -1,0 +1,71 @@
+name: Master
+
+on:
+  push:
+    branches:
+      - "master"
+    paths-ignore:
+      - "LICENSE"
+      - "*.md"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Project Files
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Snyk client
+      run: wget https://github.com/snyk/snyk/releases/download/v1.530.0/snyk-linux; mv ./snyk-linux ./snyk; chmod +x ./snyk;
+
+    - name: Set up Terraform client
+      run: wget https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.8_linux_amd64.zip; unzip terraform_1.0.8_linux_amd64.zip; mv terraform ./iac; chmod +x ./iac/terraform; rm terraform_1.0.8_linux_amd64.zip;
+
+    - name: Set up Kubernetes client
+      run: curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"; mv kubectl.sha256 ./iac/kubectl; chmod +x ./iac/kubectl;
+
+    - name: Set up Compile, Build and Test environment
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Compile, Build and Test
+      run: ./build.sh
+
+    - name: Code Analysis - SAST (White-box testing)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./codeAnalysis.sh
+
+    - name: Libraries Analysis - SAST (White-box testing)
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      run: ./librariesAnalysis.sh
+      
+    - name: Packaging
+      run: ./package.sh
+
+    - name: Package Analysis - SAST (White-box testing)
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      run: ./packageAnalysis.sh
+
+    - name: Publishing
+      env:
+        DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
+        DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      run: ./publish.sh
+
+    - name: Deploy
+      env:
+        CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+        CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+        CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        CLOUDFLARE_ZONE_NAME: ${{ secrets.CLOUDFLARE_ZONE_NAME }}
+        LINODE_PRIVATE_KEY: ${{ secrets.LINODE_PRIVATE_KEY }}
+        LINODE_PUBLIC_KEY: ${{ secrets.LINODE_PUBLIC_KEY }}
+        LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
+      run: ./deploy.sh
