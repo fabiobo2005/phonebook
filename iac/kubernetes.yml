@@ -25,7 +25,7 @@ spec:
                     values:
                       - "true"
       containers:
-        - image: ghcr.io/fvilarinho/demo-database:${BUILD_VERSION}
+        - image: ghcr.io/fabiobo2005/demo-database:${BUILD_VERSION}
           imagePullPolicy: Always
           name: database
       dnsPolicy: ClusterFirst
@@ -66,7 +66,7 @@ spec:
         io.portainer.kubernetes.application.name: backend
     spec:
       containers:
-        - image: ghcr.io/fvilarinho/demo-backend:${BUILD_VERSION}
+        - image: ghcr.io/fabiobo2005/demo-backend:${BUILD_VERSION}
           imagePullPolicy: Always
           name: backend
       dnsPolicy: ClusterFirst
@@ -107,7 +107,7 @@ spec:
         io.portainer.kubernetes.application.name: frontend
     spec:
       containers:
-        - image: ghcr.io/fvilarinho/demo-frontend:${BUILD_VERSION}
+        - image: ghcr.io/fabiobo2005/demo-frontend:${BUILD_VERSION}
           imagePullPolicy: Always
           name: frontend
       dnsPolicy: ClusterFirst
