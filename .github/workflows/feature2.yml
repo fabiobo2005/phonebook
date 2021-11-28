@@ -27,18 +27,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - 
-        name: Compile, Build and Test
-        run: ./build.sh
-      - 
-        name: Build Frontend Image and Test
-        run: docker build -f ./frontend/Dockerfile .
-      - 
-        name: Build Database Image and Test
-        run: docker build -f ./database/Dockerfile .
-      - 
-        name: Build Backend Image and Test
-        run: docker build -f ./backend/Dockerfile .               
+             
       - 
         name: Publishing
 #        env:
