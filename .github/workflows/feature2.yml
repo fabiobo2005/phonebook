@@ -38,7 +38,7 @@ jobs:
         run: docker build ./database/Dockerfile .
       - 
         name: Build Backend Image and Test
-        run: docker build ./backend/Dockerfile .               
+        run: docker build -f ./backend/Dockerfile .               
       - 
         name: Publishing
 #        env:
