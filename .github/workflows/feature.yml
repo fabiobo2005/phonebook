@@ -30,14 +30,10 @@ jobs:
     #   with:
     #     webHook: https://hooks.slack.com/services/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
 
-
-    - name: Login to GitHub Container Registry
-      uses: docker/build-push-action@v2
+    - name: Publishing
+      uses: docker/login-action@v1
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        repository:  fabiobo2005/phonebook
-        tags: ${{ github.sha }}
-#        dockerfile: ./backend/Dockerfile
-      run: docker-compose -f ./iac/docker-compose.yml push
+      run: ./publish.sh
