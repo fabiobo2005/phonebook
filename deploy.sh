@@ -61,9 +61,9 @@ else
     rm -f ./.kubeconfig-e
   fi
 
-  $KUBECTL_CMD --kubeconfig=./.kubeconfig set image deployment database database=ghcr.io/fvilarinho/demo-database:$BUILD_VERSION
-  $KUBECTL_CMD --kubeconfig=./.kubeconfig set image daemonset backend backend=ghcr.io/fvilarinho/demo-backend:$BUILD_VERSION
-  $KUBECTL_CMD --kubeconfig=./.kubeconfig set image daemonSet frontend frontend=ghcr.io/fvilarinho/demo-frontend:$BUILD_VERSION
+  $KUBECTL_CMD --kubeconfig=./.kubeconfig set image deployment database database=ghcr.io/fabiobo2005/demo-database:$BUILD_VERSION
+  $KUBECTL_CMD --kubeconfig=./.kubeconfig set image daemonset backend backend=ghcr.io/fabiobo2005/demo-backend:$BUILD_VERSION
+  $KUBECTL_CMD --kubeconfig=./.kubeconfig set image daemonSet frontend frontend=ghcr.io/fabiobo2005/demo-frontend:$BUILD_VERSION
 fi
 
 cd ..
