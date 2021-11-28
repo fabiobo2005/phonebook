@@ -55,8 +55,10 @@ jobs:
 
     - name: Publishing
       env:
-        DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
-        DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+#        DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
+#        DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+         DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+         DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: ./publish.sh
 
     - name: Deploy
