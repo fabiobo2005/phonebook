@@ -29,7 +29,10 @@ jobs:
           java-version: 11
       - 
         name: Compile, Build and Test
-        run: ./build.sh       
+        run: ./build.sh
+        
+      - name: Packaging
+        run: docker-compose -f ./iac/docker-compose.yml build         
       - 
         name: Publishing
 #        env:
