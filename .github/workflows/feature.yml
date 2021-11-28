@@ -40,4 +40,4 @@ jobs:
         repository:  fabiobo2005/phonebook
         tags: ${{ github.sha }}
 #        dockerfile: ./backend/Dockerfile
-    run: docker-compose -f ./iac/docker-compose.yml push
+      run: docker-compose -f ./iac/docker-compose.yml push
