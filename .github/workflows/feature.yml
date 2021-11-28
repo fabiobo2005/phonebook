@@ -3,7 +3,7 @@ name: New features
 on:
   push:
     branches:
-      - "feature"
+      - "feature1"
     paths-ignore:
       - "LICENSE"
       - "*.md"
