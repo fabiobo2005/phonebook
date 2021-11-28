@@ -12,6 +12,13 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+    - name: Login to GHCR.IO
+      uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
     - name: Set up Project Files
       uses: actions/checkout@v2
       with:
