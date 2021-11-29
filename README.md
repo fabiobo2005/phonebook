@@ -4,9 +4,6 @@ Getting Started
 This is a demo project for education/training purposes of DevOps. All the services used below are in the Cloud to facilitate the understanding.
 The architecture uses microservices and containerization.
 
-[![CodeQL](https://github.com/fabiobo2005/phonebook/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/codeql-analysis.yml)
-[![ci](https://github.com/fabiobo2005/phonebook/actions/workflows/feature2.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/feature2.yml) 
-[![New features](https://github.com/fabiobo2005/phonebook/actions/workflows/feature.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/feature.yml) 
 [![Develop](https://github.com/fabiobo2005/phonebook/actions/workflows/develop.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/develop.yml) 
 [![Main](https://github.com/fabiobo2005/phonebook/actions/workflows/master.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/master.yml) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fabiobo2005_phonebook&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fabiobo2005_phonebook)
