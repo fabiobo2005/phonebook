@@ -3,7 +3,7 @@ name: New features
 on:
   push:
     branches:
-      - "feature1"
+      - "feature/*"
     paths-ignore:
       - "LICENSE"
       - "*.md"
@@ -25,7 +25,33 @@ jobs:
     - name: Compile, Build and Test
       run: ./build.sh
       
-    # - name: slack_action
-    #   uses: megamegax/slack_action@0.2.2
-    #   with:
-    #     webHook: https://hooks.slack.com/services/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
+  success-notification:
+    if: success()
+    name: success-notification
+    needs: [run]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
+        with:
+          #slack-message: Success !!!
+          current-status: "success"
+          slack-webhook: "${{ secrets.SLACK_WEBHOOK }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  failure-notification:
+    if: failure()
+    name: failure-notification
+    needs: [run]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
+        with:
+          #slack-message: Failed !!!
+          current-status: "failure"
+          slack-webhook: "${{ secrets.SLACK_WEBHOOK }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"

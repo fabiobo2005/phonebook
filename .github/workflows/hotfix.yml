@@ -1,0 +1,38 @@
+name: Hotfixes
+
+on:
+  push:
+    branches: hotfix/*
+    paths-ignore:
+      - "LICENSE"
+      - "*.md"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Set up Project Files
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - 
+        name: Set up Compile, Build and Test environment
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - 
+        name: Compile, Build and Test
+        run: ./build.sh
+        
+      - name: Packaging
+        run: docker-compose -f ./iac/docker-compose.yml build         
+      - 
+        name: Publishing
+        run: docker-compose -f ./iac/docker-compose.yml push        
