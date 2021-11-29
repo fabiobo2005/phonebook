@@ -20,6 +20,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/* Start Import failed components
+*/
+
+import java.util.*;
+import java.lang.Math;
+import java.util.Random;
+import javafx.util.Pair;
+
+/* Finish Import failed components
+*/
+
 /**
  * Class that defines the controller of the UI requests.
  *
