@@ -13,7 +13,7 @@ The architecture uses microservices and containerization.
 [![Main](https://github.com/fabiobo2005/phonebook/actions/workflows/master.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/master.yml)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fabiobo2005_phonebook&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fabiobo2005_phonebook)
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=fabiobo2005_phonebook)
+
 
 The pipeline uses [`GitHub Actions`](https://github.com/features/actions) that contains a pipeline with 7 phases described below:
 
@@ -157,4 +157,7 @@ Contact
 Code in this repository is only a sample and is **NOT guaranteed to be bug free and production quality.** This is NOT intended to be used in production environments. It is merely provided as a guide for 3rd-party developers on best practices and usage of the Github Actions, SonarCloud, Snyk, Linode, Azure, Cloudflare and some other DevSecOps RESTful APIs and other published interfaces and is not intended for production use "as is".
 
 ## Support Notice
-This Repo does not provides sample support even in a “best effort” basis. Like any public repository, it is the responsibility of the developer and/or user to ensure that the customization works correctly. 
+This Repo does not provides sample support even in a “best effort” basis. Like any public repository, it is the responsibility of the developer and/or user to ensure that the customization works correctly.
+
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=fabiobo2005_phonebook)
