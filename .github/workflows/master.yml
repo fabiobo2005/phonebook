@@ -48,11 +48,11 @@ jobs:
       run: ./gradlew jacocoTestReport  sonarqube --stacktrace -i
 
     - name: Libraries Analysis - SAST (White-box testing) - Run Snyk to check for vulnerabilities
-        uses: snyk/actions/gradle-jdk11@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high
+      uses: snyk/actions/gradle-jdk11@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high
 
     # - name: Libraries Analysis - SAST (White-box testing) - Snyk
     #   env:
