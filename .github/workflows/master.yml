@@ -49,13 +49,10 @@ jobs:
           -Dsonar.organization=fabiobo2005
           -Dsonar.projectKey=fabiobo2005_phonebook
           -Dsonar.sources=src/main/java,src/main/webapp,src/main/resources/static
-          -Dsonar.test.exclusions=**/ServletInitializer*
-          -Dsonar.coverage.exclusions=**/ServletInitializer*
-          -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#      run: ./codeAnalysis.sh
+      run: ./gradlew jacocoTestReport  sonarqube --stacktrace -i
 
     - name: Libraries Analysis - SAST (White-box testing)
       env:
