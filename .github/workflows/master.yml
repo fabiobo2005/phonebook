@@ -52,7 +52,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        args: --severity-threshold=high
+        args: test --all-sub-projects --severity-threshold=high
 
     # - name: Libraries Analysis - SAST (White-box testing) - Snyk
     #   env:
