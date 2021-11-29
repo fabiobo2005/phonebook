@@ -4,6 +4,7 @@ Getting Started
 This is a demo project for education/training purposes of DevOps. All the services used below are in the Cloud to facilitate the understanding.
 The architecture uses microservices and containerization.
 
+[![CodeQL](https://github.com/fabiobo2005/phonebook/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/codeql-analysis.yml)
 [![ci](https://github.com/fabiobo2005/phonebook/actions/workflows/feature2.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/feature2.yml) 
 [![New features](https://github.com/fabiobo2005/phonebook/actions/workflows/feature.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/feature.yml) 
 [![Develop](https://github.com/fabiobo2005/phonebook/actions/workflows/develop.yml/badge.svg)](https://github.com/fabiobo2005/phonebook/actions/workflows/develop.yml) 
