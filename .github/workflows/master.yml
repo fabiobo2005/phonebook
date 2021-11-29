@@ -7,25 +7,86 @@ on:
     paths-ignore:
       - "LICENSE"
       - "*.md"
-
 jobs:
-  run:
+  analyze_codeql:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Learn more about CodeQL language support at https://git.io/codeql-language-support
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+        # queries: ./path/to/local/query, your-org/your-repo/queries@main
+
+    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+    # If this step fails, then you should remove it and run the build manually (see below)
+    #- name: Autobuild
+    #  uses: github/codeql-action/autobuild@v1
+
+    - name: My Own Build
+      run: ./build.sh
+
+    # ℹ️ Command-line programs to run using the OS shell.
+    # 📚 https://git.io/JvXDl
+
+    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
+    #    and modify them (or add more) to build your code if your project
+    #    uses a compiled language
+
+    #- run: |
+    #   make bootstrap
+    #   make release
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+#---  
+
+  build_compile_deploy:
+    needs: [analyze_codeql]
     runs-on: ubuntu-latest
     steps:
-    - name: Login to GHCR.IO
+    - name: Login to Github Container Registry
       uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
           
     - name: Set up Project Files
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
-    - name: Set up Snyk client
-      run: wget https://github.com/snyk/snyk/releases/download/v1.530.0/snyk-linux; mv ./snyk-linux ./snyk; chmod +x ./snyk;
+    - name: Run Snyk to check Kubernetes and Terraform manifest file for issues
+      continue-on-error: true
+      uses: snyk/actions/iac@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        file: ./iac/
+    - uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: snyk.sarif
 
     - name: Set up Terraform client
       run: wget https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.8_linux_amd64.zip; unzip terraform_1.0.8_linux_amd64.zip; mv terraform ./iac; chmod +x ./iac/terraform; rm terraform_1.0.8_linux_amd64.zip;
@@ -41,17 +102,17 @@ jobs:
     - name: Compile, Build and Test
       run: ./build.sh
 
-    - name: Code Analysis - SAST (White-box testing)
+    - name: Code Analysis - SAST (White-box testing) - Run SonarCloud to check for vulnerabilities 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: ./codeAnalysis.sh
+      run: ./gradlew jacocoTestReport  sonarqube --stacktrace -i
 
-    - name: Libraries Analysis - SAST (White-box testing)
+    - name: Libraries Analysis - SAST (White-box testing) - Snyk
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       run: ./librariesAnalysis.sh
-      
+   
     - name: Packaging
       run: ./package.sh
 
@@ -73,3 +134,34 @@ jobs:
         LINODE_PUBLIC_KEY: ${{ secrets.LINODE_PUBLIC_KEY }}
         LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
       run: ./deploy.sh
+  
+  success-notification:
+    if: success()
+    name: success-notification
+    needs: [analyze_codeql, build_compile_deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
+        with:
+          #slack-message: Success !!!
+          current-status: "success"
+          slack-webhook: "${{ secrets.SLACK_WEBHOOK }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  failure-notification:
+    if: failure()
+    name: failure-notification
+    needs: [analyze_codeql, build_compile_deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.4
+      - uses: reside-eng/workflow-status-notification-action@v1.0.0
+        with:
+          #slack-message: Failed !!!
+          current-status: "failure"
+          slack-webhook: "${{ secrets.SLACK_WEBHOOK }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"

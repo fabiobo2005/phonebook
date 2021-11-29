@@ -1,8 +1,8 @@
-name: ci
+name: Hotfixes
 
 on:
   push:
-    branches: feature
+    branches: hotfix/*
     paths-ignore:
       - "LICENSE"
       - "*.md"
@@ -35,9 +35,4 @@ jobs:
         run: docker-compose -f ./iac/docker-compose.yml build         
       - 
         name: Publishing
-#        env:
-#         DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_REGISTRY_USER }}
-#         DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-#         DOCKER_REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
-#         DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker-compose -f ./iac/docker-compose.yml push        
