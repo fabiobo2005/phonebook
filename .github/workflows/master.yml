@@ -125,12 +125,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       run: ./librariesAnalysis.sh
-
-    - name: Upload result to GitHub Code Scanning
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: snyk.sarif
-      
+   
     - name: Packaging
       run: ./package.sh
 
