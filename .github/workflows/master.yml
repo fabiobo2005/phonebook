@@ -39,8 +39,11 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    #- name: Autobuild
+    #  uses: github/codeql-action/autobuild@v1
+
+    - name: My Own Build
+      run: ./build.sh
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
@@ -55,6 +58,7 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
 #---  
 
   build_compile_deploy:
@@ -84,9 +88,6 @@ jobs:
       with:
         sarif_file: snyk.sarif
 
-#    - name: Set up Snyk client
-#      run: wget https://github.com/snyk/snyk/releases/download/v1.530.0/snyk-linux; mv ./snyk-linux ./snyk; chmod +x ./snyk;
-
     - name: Set up Terraform client
       run: wget https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.8_linux_amd64.zip; unzip terraform_1.0.8_linux_amd64.zip; mv terraform ./iac; chmod +x ./iac/terraform; rm terraform_1.0.8_linux_amd64.zip;
 
@@ -107,20 +108,6 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: ./gradlew jacocoTestReport  sonarqube --stacktrace -i
 
-    # - name: Libraries Analysis - SAST (White-box testing) - Run Snyk to check for vulnerabilities
-    #   uses: snyk/actions/gradle-jdk11@master
-    #   continue-on-error: true # To make sure that SARIF upload gets called
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #   with:
-    #     args: --sarif-file-output=snyk.sarif
-    #     json: true
-
-    # - uses: actions/upload-artifact@v2
-    #   with:
-    #     name: SARIF
-    #     path: snyk.sarif 
-
     - name: Libraries Analysis - SAST (White-box testing) - Snyk
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -129,22 +116,10 @@ jobs:
     - name: Packaging
       run: ./package.sh
 
-    - name: Run Snyk to check image for vulnerabilities
-      continue-on-error: true
-      uses: snyk/actions/docker@master
+    - name: Package Analysis - SAST (White-box testing)
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: demo-database
-        args: --file=./database/Dockerfile
-    - uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: snyk.sarif
-
-    # - name: Package Analysis - SAST (White-box testing)
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #   run: ./packageAnalysis.sh
+      run: ./packageAnalysis.sh
 
     - name: Publishing
       run: ./publish.sh
@@ -159,3 +134,14 @@ jobs:
         LINODE_PUBLIC_KEY: ${{ secrets.LINODE_PUBLIC_KEY }}
         LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
       run: ./deploy.sh
+  
+#---  
+  post_slack_message:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: rtCamp/action-slack-notify@v2.0.0
+    env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: Fabio Oliveira 
+        SLACK_CHANNEL: phonebook-demo-java-app
