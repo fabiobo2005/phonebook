@@ -42,10 +42,21 @@ jobs:
       run: ./build.sh
 
     - name: Code Analysis - SAST (White-box testing)
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: ./backend
+        args: >
+          -Dsonar.organization=fabiobo2005
+          -Dsonar.projectKey=fabiobo2005_phonebook
+          -Dsonar.sources=src/main/java,src/main/webapp,src/main/resources/static
+          -Dsonar.test.exclusions=**/ServletInitializer*, **/DemoApplication*
+          -Dsonar.coverage.exclusions=**/ServletInitializer*, **/DemoApplication*
+          -Dsonar.tests=tests/
+          -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: ./codeAnalysis.sh
+#      run: ./codeAnalysis.sh
 
     - name: Libraries Analysis - SAST (White-box testing)
       env:
