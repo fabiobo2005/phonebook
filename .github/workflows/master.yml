@@ -51,7 +51,6 @@ jobs:
           -Dsonar.sources=src/main/java,src/main/webapp,src/main/resources/static
           -Dsonar.test.exclusions=**/ServletInitializer*
           -Dsonar.coverage.exclusions=**/ServletInitializer*
-          -Dsonar.tests=tests/
           -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
