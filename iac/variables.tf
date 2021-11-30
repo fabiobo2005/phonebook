@@ -5,7 +5,7 @@ variable "email" {}
 variable "api_key" {}
 variable "zone_id" {}
 variable "zone_name" {}
-variable "ddtoken"
+variable "ddtoken" {}
 
 resource "random_string" "password" {
   length = 32
