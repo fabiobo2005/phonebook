@@ -31,7 +31,8 @@ if [ -z "$PROVISIONED" ]; then
                        -var "email=$CLOUDFLARE_EMAIL" \
                        -var "api_key=$CLOUDFLARE_API_KEY" \
                        -var "zone_id=$CLOUDFLARE_ZONE_ID" \
-                       -var "zone_name=$CLOUDFLARE_ZONE_NAME"
+                       -var "zone_name=$CLOUDFLARE_ZONE_NAME" \
+                       -var "ddtoken=$DATADOG_AGENT_TOKEN"
 
   CLUSTER_MANAGER_IP=`cat cluster-manager-ip`
 
