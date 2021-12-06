@@ -3,7 +3,7 @@ name: Main
 on:
   push:
     branches:
-      - "main"
+      - "main_"
     paths-ignore:
       - "LICENSE"
       - "*.md"
